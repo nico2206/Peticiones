@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 p-8 text-center font-sans">
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+      id="userContainer"
+    ></div>
+    <script>
+      async function  Usuarios() {
+        try {
+          const response = await fetch("https://randomuser.me/api/?results=4");
+          const datos = await response.json();
+
+          const cajaUsuarios = document.getElementById("userContainer");
+          cajaUsuarios.innerHTML = "";
+
+          datos.results.forEach((user) => {
+            const userr = document.createElement("div");
+            userr.classList.add(
+              "bg-white",
+  "border",
+              "border-gray-200",
+              "rounded-lg",
+              "shadow-lg",
+              "p-6",
+              "flex",
+              "flex-col",
+              "items-center",
+              "text-center"
+            );
+
+            userr.innerHTML = `
+                    <h2 class="text-xl font-semibold text-gray-800 mb-2">${user.name.first} ${user.name.last}</h2>    
+                    <img src="${user.picture.medium}" alt="Foto de ${user.name.first}" class="w-20 h-20 rounded-full object-cover mb-4">
+                    <p class="text-sm text-gray-600"><strong>Email:</strong> ${user.email}</p>
+                    <p class="text-sm text-gray-600"><strong>Telefono:</strong> ${user.phone}</p>
+                    <p class="text-sm text-gray-600"><strong>Edad:</strong> ${user.dob.age}</p>
+                    <p class="text-sm text-gray-600"><strong>Género:</strong> ${user.gender}</p>
+                    <p class="text-sm text-gray-600"><strong>Ubicación:</strong> ${user.location.street.name}</p>
+                    <p class="text-sm text-gray-600"><strong>País:</strong> ${user.location.country}</p>
+                    `;
+
+            cajaUsuarios.appendChild(userr);
+          });
+        } catch (error) {
+          console.error("Error al obtener los usuarios:", error);
+        }
+      }
+      window.onload = Usuarios;
+    </script>
+  </body>
+</html>
